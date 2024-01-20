@@ -1,0 +1,18 @@
+*.csv
+*.json
+*.txt
+.env
+!package.json
+!package-lock.json
+node_modules/
+.ipynb_checkpoints/
+.DS_Store
+__pycache__/
+.directory
+data/*
+
+# 特定檔案
+tempCodeRunnerFile.py
+！data/bs5-scss/_variables.scss
+# Actions
+gh-pages*

@@ -1,0 +1,65 @@
+extends layout
+block heads
+  link(rel="stylesheet" href='/css/rating-star.css')
+
+block content
+  .container
+    h1= `${teacherAndSubject.teacher} - ${teacherAndSubject.subject}`
+      button#leaveRating.btn.btn-primary.text-light.float-end(type='button' data-bs-toggle='modal' data-bs-target='#')
+        | 登入以評分
+    
+    //-.row TODO
+      p 課程代碼：#{} 學分數：#{} 是否為畢業班課程：#{} 校區：#{} 教師：#{} 學期：#{} 課程說明：#{}
+      
+    h3 平均得分
+    .row.text-center.justify-content-evenly
+      if rating.length > 0
+        //- let obj = {"豐富度": rating[0].learning.toFixed(1), "推薦度": rating[0].recommendation.toFixed(1), "作業量": rating[0].homework.toFixed(1)}
+        - let obj = {learning: "豐富度", recommendation: "推薦度", homework: "作業量"} 
+        each val, key in obj
+          .col-4.col-md-3.col-lg-2
+            h4.text-center 
+              = val
+              //-br
+              //-= val+' '
+              //*i.fa.fa-star
+            div.fs-1(id=key,style="aspect-ratio:1/1;")
+      else
+        .alert.alert-primary.text-center
+          p 尚未有評分 
+          a(href='#myModal' data-bs-target='#myModal' data-bs-toggle='modal') 快來評分吧
+    
+    if isAuthenticated
+      .my-1
+        h3 我的評論
+        - const d = data.find(elem => elem['userID'] === me)
+          if d
+            .card
+              include _partial/comment_card.pug
+          else
+            .alert.alert-primary.text-center
+              p 尚未進行評論
+              a(href='#myModal' data-bs-target='#myModal' data-bs-toggle='modal') 快來評分吧
+      
+    h3 所有評論
+    if !isAuthenticated
+      .alert.alert-warning 如需留下評論，請先登入。
+
+    if data.length > 0
+      each d in data
+        if !d.isHidden
+          .card.mb-1
+            include _partial/comment_card.pug
+
+    else
+      p 尚未有任何評論
+      a(href='#myModal' data-bs-target='#myModal' data-bs-toggle='modal') 快來評分吧
+
+  include _partial/comment_modals.pug
+
+block scripts
+  script(src="//cdn.jsdelivr.net/npm/sweetalert2@10")
+  script(src="/js/progressbar.min.js")
+  script(src='/js/drawProgressBar.js')
+  script(src='/js/rating.js' async)
+  script(src='/js/rating-star.js')

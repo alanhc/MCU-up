@@ -1,0 +1,11 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    restart: always
+  up-1.0:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./up-1.0
+    ports:
+      - '3000:3000'

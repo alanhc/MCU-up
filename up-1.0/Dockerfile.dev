@@ -1,0 +1,18 @@
+FROM node:14-alpine
+
+WORKDIR /usr/app
+
+COPY ./package.json ./
+COPY ./.npmrc ./
+
+# Install pnpm
+RUN npm install -g pnpm;
+
+RUN pnpm install
+COPY ./ ./
+
+
+RUN ["chmod", "+x", "./setup.sh"]
+
+# Default command
+CMD ["pnpm", "start"]
